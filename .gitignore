@@ -1,0 +1,27 @@
+# Binaries
+ai-manager.exe
+*.exe
+
+# Build artifacts
+build/
+dist/
+
+# Go module cache
+pkg/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*.log
+
+# State files
+~/.ai-manager.yaml
+~/.ai-manager-state.json

@@ -1,0 +1,9 @@
+general:
+  log_dir: "~/.ai-manager/logs"
+  data_dir: "~/.ai-manager/data"
+  auto_save: true
+
+processes: []
+
+monitor:
+  interval: "10s"
