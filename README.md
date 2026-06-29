@@ -4,12 +4,15 @@ CLI tool for managing AI model inference, API services, and training jobs on loc
 
 ## Features
 
+- **TUI Dashboard** — Bubble Tea-based interactive terminal interface
 - Process lifecycle management (start, stop, pause, restart)
 - Resource monitoring (CPU, memory, GPU via nvidia-smi)
 - Log management (tail, search, list)
+- Ollama model discovery and management
 - YAML-based configuration with auto-start support
 - Runtime state persistence across restarts
 - Multi-instance process support
+- Windows Registry autostart
 - Windows process management with OS-level integration
 
 ## Requirements
@@ -141,14 +144,58 @@ ai-manager status                                # Show overall system status
 ai-manager version                               # Show version
 ```
 
+## TUI Dashboard
+
+Launch the interactive dashboard:
+
+```bash
+ai-manager --tui
+```
+
+### Navigation
+
+| Key | Action |
+|-----|--------|
+| `1-5` | Switch tabs |
+| `r` | Refresh current view |
+| `ctrl+c` | Quit |
+
+### Tabs
+
+- **Dashboard** — System overview with CPU, memory, GPU, running services, and Ollama models
+- **Models** — Discover and manage Ollama models (load, unload, refresh)
+- **Utilities** — Log viewer and health checks for running services
+- **Resources** — Real-time resource monitoring with history
+- **Settings** — Service configuration and paths
+
+### Keyboard Shortcuts (per tab)
+
+**Models tab:**
+- `up/down` or `k/j` — Navigate model list
+- `l` — Load selected model
+- `u` — Unload selected model
+- `r` — Refresh model list
+
+**Utilities tab:**
+- `left/right` — Switch between logs and health views
+- `up/down` or `k/j` — Navigate logs
+- `g/G` — Jump to top/bottom of logs
+- `r` — Refresh
+
+**Resources tab:**
+- `up/down` or `k/j` — Navigate history
+- `r` — Refresh
+
+**Settings tab:**
+- `up/down` or `k/j` — Navigate services
+- `enter` — Stop selected service
+
 ## Project Structure
 
 ```
 ai-manager/
 ├── cmd/
-│   └── main.go              # Entry point
-├── config/
-│   └── default.yaml         # Default configuration template
+│   └── main.go              # Entry point with --tui flag
 ├── internal/
 │   ├── cli/
 │   │   └── commands.go      # CLI commands (cobra)
@@ -160,8 +207,35 @@ ai-manager/
 │   │   └── monitor.go       # Resource monitoring (CPU, memory, GPU)
 │   ├── logger/
 │   │   └── logger.go        # Log file management
-│   └── state/
-│       └── state.go         # Runtime state persistence
+│   ├── state/
+│   │   └── state.go         # Runtime state persistence
+│   ├── ollama/
+│   │   └── client.go        # Ollama API client
+│   ├── registry/
+│   │   └── autostart.go     # Windows Registry autostart
+│   └── tui/
+│       ├── app.go           # Bubble Tea main app
+│       ├── model.go         # AppContext shared state
+│       ├── types/
+│       │   └── types.go     # Shared types
+│       ├── styles/
+│       │   └── theme.go     # Consistent styling
+│       ├── util/
+│       │   └── format.go    # Formatting utilities
+│       ├── components/      # Reusable UI components
+│       │   ├── gauge.go
+│       │   ├── sparkline.go
+│       │   ├── table.go
+│       │   ├── confirm.go
+│       │   ├── tabbar.go
+│       │   ├── statusbar.go
+│       │   └── tabbar.go
+│       └── tabs/            # Tab implementations
+│           ├── dashboard.go
+│           ├── models.go
+│           ├── utilities.go
+│           ├── resources.go
+│           └── settings.go
 ├── go.mod
 ├── go.sum
 └── README.md
