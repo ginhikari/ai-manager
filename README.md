@@ -150,6 +150,8 @@ Launch the interactive dashboard:
 
 ```bash
 ai-manager --tui
+# or
+ai-manager tui
 ```
 
 ### Navigation
@@ -215,6 +217,7 @@ ai-manager/
 │   │   └── autostart.go     # Windows Registry autostart
 │   └── tui/
 │       ├── app.go           # Bubble Tea main app
+│       ├── launch.go        # TUI launch entry point
 │       ├── model.go         # AppContext shared state
 │       ├── types/
 │       │   └── types.go     # Shared types
