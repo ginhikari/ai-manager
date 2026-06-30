@@ -13,19 +13,22 @@ import (
 )
 
 type DashboardTab struct {
-	data      types.DashboardData
-	loading   bool
-	errMsg    string
-	refreshCmd tea.Cmd
+	ctx         *types.AppContext
+	data        types.DashboardData
+	loading     bool
+	errMsg      string
+	refreshCmd  tea.Cmd
 }
 
-func NewDashboardTab() DashboardTab {
+func NewDashboardTab(ctx *types.AppContext) DashboardTab {
 	return DashboardTab{
+		ctx:     ctx,
 		loading: true,
 	}
 }
 
 func (t *DashboardTab) Init() tea.Cmd {
+	t.refreshCmd = RefreshDashboard(t.ctx)
 	return t.refreshCmd
 }
 

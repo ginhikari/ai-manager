@@ -31,7 +31,7 @@ type App struct {
 
 
 func NewApp(ctx *types.AppContext) *App {
-	dashboardTab := tabs.NewDashboardTab()
+	dashboardTab := tabs.NewDashboardTab(ctx)
 	modelsTab := tabs.NewModelsTab(ctx)
 	utilitiesTab := tabs.NewUtilitiesTab(ctx)
 	resourcesTab := tabs.NewResourcesTab(ctx)
@@ -57,6 +57,19 @@ func (a *App) Init() tea.Cmd {
 	a.ctx.StartTime = time.Now()
 	a.refreshCmd = func() tea.Msg {
 		return refreshAppMsg{}
+	}
+
+	// Initialize each tab and collect their commands
+	var cmds []tea.Cmd
+	for _, tab := range a.tabs {
+		cmd := tab.Init()
+		if cmd != nil {
+			cmds = append(cmds, cmd)
+		}
+	}
+
+	if len(cmds) > 0 {
+		return tea.Batch(cmds...)
 	}
 	return a.refreshCmd
 }
