@@ -12,6 +12,7 @@ import (
 	"ai-manager/internal/monitor"
 	"ai-manager/internal/process"
 	"ai-manager/internal/state"
+	"ai-manager/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -46,6 +47,7 @@ monitoring, logging, and configuration all in one place.`,
 		newConfigCmd(),
 		newStatusCmd(),
 		newVersionCmd(),
+		newTuiCmd(),
 	)
 
 	return root
@@ -788,6 +790,16 @@ func newVersionCmd() *cobra.Command {
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("ai-manager v0.1.0")
+		},
+	}
+}
+
+func newTuiCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "tui",
+		Short: "Launch TUI mode",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return tui.Launch()
 		},
 	}
 }
